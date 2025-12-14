@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdut.hospital.mapper.ScheduleMapper">
+
+    <!-- 根据医生ID查询排班信息 -->
+    <select id="findByDoctor" parameterType="com.sdut.hospital.po.Doctor" resultType="com.sdut.hospital.po.Schedule">
+        SELECT *
+        FROM schedule
+        WHERE doctor_id = #{doctor.id}
+    </select>
+
+    <!-- 根据日期范围查询排班信息 -->
+    <select id="findByStartDayBetween" parameterType="map" resultType="com.sdut.hospital.po.Schedule">
+        SELECT *
+        FROM schedule
+        WHERE start_day BETWEEN #{startDay} AND #{endDay}
+    </select>
+
+    <!-- 根据医生ID和日期范围查询排班信息 -->
+    <select id="findByDoctorAndStartDayBetween" parameterType="map" resultType="com.sdut.hospital.po.Schedule">
+        SELECT *
+        FROM schedule
+        WHERE doctor_id = #{doctor.id}
+          AND start_day BETWEEN #{startDay} AND #{endDay}
+    </select>
+
+    <!-- 查询所有排班信息 -->
+    <select id="findAll" resultType="com.sdut.hospital.po.Schedule">
+        SELECT *
+        FROM schedule
+    </select>
+
+    <!-- 根据ID查询排班信息 -->
+    <select id="findById" parameterType="long" resultType="com.sdut.hospital.po.Schedule">
+        SELECT *
+        FROM schedule
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入新的排班信息 -->
+    <insert id="save" parameterType="com.sdut.hospital.po.Schedule">
+        INSERT INTO schedule (doctor_id, start_day, end_day)
+        VALUES (#{doctor.id}, #{startDay}, #{endDay})
+    </insert>
+
+    <!-- 根据ID删除排班信息 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE
+        FROM schedule
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>医院住院部管理系统-管理员</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/jqvmap/jqvmap.min.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" th:href="@{/plugins/summernote/summernote-bs4.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700}" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+        <div class="container">
+            <div class="collapse navbar-collapse order-3">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/index}">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/patient}">患者</a>
+                    </li>
+                    <li  class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/doctor}">医生</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/drug}">药物</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/exam}">检测</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/bed}">床位</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/schedule}">排班</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/echarts}">图表</a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                <li class="nav-link">
+                    <a class="nav-link" href="/doctor/index" th:text="${session.username}"></a>
+                </li>
+                <li class="nav-link">
+                    <a class="nav-link" href="/logout" th:text="'注销'"></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="content-wrapper">
+        <div class="content-header">
+        </div>
+        <div class="content">
+            <div class="container-fluid"></div>
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3 th:text="${patientCount}">-1</h3>
+                            <p>患者数量</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-android-sad"></i>
+                        </div>
+                        <a th:href="@{/admin/patient}" class="small-box-footer">查看更多信息<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 th:text="${doctorCount}">-1</h3>
+                            <p>医生数量</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-android-happy"></i>
+                        </div>
+                        <a th:href="@{/admin/doctor}" class="small-box-footer">查看更多信息<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3 th:text="${drugCount}">-1</h3>
+                            <p>今日药单</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-medkit"></i>
+                        </div>
+                        <a th:href="@{/admin/drug}" class="small-box-footer">查看更多信息<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="small-box bg-blue">
+                        <div class="inner">
+                            <h3 th:text="${examCount}">-1</h3>
+                            <p>今日检测</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-heart"></i>
+                        </div>
+                        <a th:href="@{/admin/exam}" class="small-box-footer">查看更多信息<i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                                                    <h3 th:text="${bedCount}">-1</h3>
+                            <p>床位数量</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bed-outline"></i>
+                        </div>
+                        <a th:href="@{/admin/bed}" class="small-box-footer">查看更多信息 <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="small-box bg-purple">
+                        <div class="inner">
+                            <h3 th:text="${scheduleDoctorCount}">-1</h3>
+                            <p>排班管理</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-android-happy"></i>
+                        </div>
+                        <a th:href="@{/admin/schedule}" class="small-box-footer">查看更多信息 <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="small-box bg-dark">
+                        <div class="inner">
+                            <h3 th:text="4">-1</h3>
+                            <p>图表显示</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-android-happy"></i>
+                        </div>
+                        <a th:href="@{/admin/echarts}" class="small-box-footer">查看更多信息 <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">医生排班信息</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>星期</th>
+                                    <th>医生姓名</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="entry : ${dailySchedules.entrySet()}">
+                                    <td th:text="${entry.key}"></td>
+                                    <td>
+                                        <!-- 使用 Thymeleaf 内置迭代器处理医生姓名 -->
+                                        <span th:if="${entry.value.isEmpty()}">未分配</span>
+                                        <span th:each="schedule, iter : ${entry.value}" th:if="${!entry.value.isEmpty()}">
+                                    <span th:text="${schedule.doctor.name}"></span>
+                                            <!-- 如果不是最后一个医生，则添加四个非断行空格 -->
+                                    <span th:if="${!iter.last}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+    <div th:insert="temp::footer"></div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/dist/js/demo.js}"></script>
+<!-- DataTables -->
+<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+</body>
+</html>

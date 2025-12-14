@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdut.hospital.mapper.PatientMapper">
+
+    <!-- 查询根据用户名和密码查找患者 -->
+    <select id="findByNameAndPassword" parameterType="map" resultType="com.sdut.hospital.po.Patient">
+        SELECT * FROM patient WHERE name = #{name} AND password = #{password}
+    </select>
+
+    <!-- 查询根据用户名查找患者 -->
+    <select id="findByName" parameterType="string" resultType="com.sdut.hospital.po.Patient">
+        SELECT * FROM patient WHERE name = #{name}
+    </select>
+
+    <!-- 查询患者总数 -->
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM patient
+    </select>
+
+    <!-- 查询所有患者 -->
+    <select id="findAll" resultType="com.sdut.hospital.po.Patient">
+        SELECT * FROM patient
+    </select>
+
+    <!-- 根据医生ID查询所有患者 -->
+    <select id="findAllByDoctor_Id" parameterType="long" resultType="com.sdut.hospital.po.Patient">
+        SELECT * FROM patient WHERE doctor_id = #{id}
+    </select>
+
+    <!-- 根据患者ID获取患者信息 -->
+    <select id="getPatientById" parameterType="long" resultType="com.sdut.hospital.po.Patient">
+        SELECT * FROM patient WHERE id = #{id}
+    </select>
+
+    <!-- 根据ID列表查询患者信息 -->
+    <select id="findByIdIn" parameterType="list" resultType="com.sdut.hospital.po.Patient">
+        SELECT * FROM patient WHERE id IN
+        <foreach collection="selectedIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 更新患者状态（出院或未出院） -->
+    <update id="updateById" parameterType="long">
+        UPDATE patient
+        SET discharged = CASE WHEN discharged = 1 THEN 0 ELSE 1 END
+        WHERE id = #{id}
+    </update>
+
+</mapper>

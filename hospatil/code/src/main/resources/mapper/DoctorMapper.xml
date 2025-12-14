@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdut.hospital.mapper.DoctorMapper">
+
+    <!-- 根据用户名和密码查询医生信息 -->
+    <select id="findByNameAndPassword" parameterType="map" resultType="com.sdut.hospital.po.Doctor">
+        SELECT * FROM doctor WHERE name = #{name} AND password = #{password}
+    </select>
+
+    <!-- 根据用户名查询医生信息 -->
+    <select id="findByName" parameterType="String" resultType="com.sdut.hospital.po.Doctor">
+        SELECT * FROM doctor WHERE name = #{name}
+    </select>
+
+    <!-- 查询医生总数 -->
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM doctor
+    </select>
+
+    <!-- 查询所有医生信息 -->
+    <select id="findAll" resultType="com.sdut.hospital.po.Doctor">
+        SELECT * FROM doctor
+    </select>
+
+    <!-- 根据ID查询医生信息 -->
+    <select id="findById" parameterType="long" resultType="com.sdut.hospital.po.Doctor">
+        SELECT * FROM doctor WHERE id = #{id}
+    </select>
+
+    <!-- 插入医生信息 -->
+    <insert id="save" parameterType="com.sdut.hospital.po.Doctor">
+        INSERT INTO doctor (name, password, addr, avatar, creat_date, phone, update_date)
+        VALUES (#{name}, #{password}, #{addr}, #{avatar}, #{creatDate}, #{phone}, #{updateDate})
+    </insert>
+
+    <!-- 根据ID删除医生信息 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM doctor WHERE id = #{id}
+    </delete>
+
+</mapper>

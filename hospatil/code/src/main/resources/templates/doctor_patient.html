@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>医院住院部管理系统-医生</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}" >
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <!-- iCheck -->
+    <link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" th:href="@{/plugins/jqvmap/jqvmap.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+    <!-- summernote -->
+    <link rel="stylesheet" th:href="@{/plugins/summernote/summernote-bs4.css}">
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700}" rel="stylesheet">
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+        <div class="container">
+            <div class="collapse navbar-collapse order-3">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/doctor/index}">首页</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/doctor/index}">患者</a>
+                    </li>
+
+
+
+
+
+                </ul>
+            </div>
+            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                <li class="nav-link" >
+                    <a class="nav-link" href="/doctor/index" th:text="${session.username}"></a>
+                </li>
+                <li class="nav-link" >
+                    <a class="nav-link" href="/logout" th:text="'注销'"></a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+    <div class="content-wrapper">
+        <div class="content-header">
+        </div>
+        <div class="content">
+            <div class="container">
+            <row>
+                <div class="alert alert-default-primary alert-dismissible" th:unless="${#strings.isEmpty(message)}">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h6 th:text="${message}"><i class="icon fas fa-ban"></i> 提示!</h6>
+                </div>
+            </row>
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title" th:text="'病人'">
+                                标题
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-text">
+                                <form role="form">
+                                    <div class="form-group">
+                                        <label for="name">姓名</label>
+                                        <input th:value="${patient.name}" type="text" readonly="readonly" id="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">电话</label>
+                                        <input th:if="${patient.phone}" th:value="${patient.phone}" type="tel" readonly="readonly" id="phone">
+                                        <input th:if="!${patient.phone}" th:value="无信息" type="phone" readonly="readonly" id="phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addr">住址</label>
+                                        <input th:if="${patient.addr}" th:value="${patient.addr}" type="text" readonly="readonly" id="addr">
+                                        <input th:if="!${patient.addr}" th:value="无信息" type="text" readonly="readonly" id="addr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bed">床位</label>
+                                        <input th:if="${patient.bed}" th:value="${patient.bed.number}" type="text" readonly="readonly" id="bed">
+                                        <input th:if="!${patient.bed}" th:value="未分配" type="text" readonly="readonly" id="bed">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addr">负责医生</label>
+                                        <input th:if="${patient.doctor}" th:value="${patient.doctor.name}" type="text" readonly="readonly" id="addr">
+                                        <input th:if="!${patient.doctor}" th:value="无信息" type="text" readonly="readonly" id="addr">
+                                    </div>
+                                    <a class="btn btn-primary" th:href="@{'/doctor/adddrug/'+${patient.id}}">开药</a>
+                                    <a class="btn btn-primary" th:href="@{'/doctor/addexam/'+${patient.id}}">检测</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">药单</div>
+                        </div>
+                        <div class="card-body pre-scrollable">
+                            <div class="card-text" th:if="${#lists.isEmpty(drugs)}" th:text="暂无"></div>
+                            <ul class="list-group">
+                                <li class="list-group-item" th:each="d:${drugs}">
+                                    <div class="text-right card-text text-red" th:text="${#dates.format(d.creatDate,'dd/MM/yyyy')}" ></div>
+                                    <div class="card-text" th:text="'名称：'+${d.drugname}"></div>
+                                    <div class="card-text" th:text="'数目：'+${d.number}+'份'"></div>
+                                    <div class="card-text" th:text="'价格：'+${d.price}+'rmb'"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">检测</div>
+                        </div>
+                        <div class="card-body pre-scrollable">
+                            <div class="card-text" th:if="${#lists.isEmpty(exams)}" th:text="暂无"></div>
+                            <ul class="list-group">
+                                <li class="list-group-item" th:each="e:${exams}">
+                                    <div class="text-right card-text text-red" th:text="${#dates.format(e.creatTime,'dd/MM/yyyy')}"></div>
+                                    <div class="card-text" th:text="'内容：'+${e.content}"></div>
+                                    <div class="card-text" th:text="'价格：'+${e.price}+'rmb'"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div th:insert="temp::footer"></div>
+</div>
+
+
+
+<!-- jQuery -->
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/dist/js/demo.js}"></script>
+<!-- DataTables -->
+<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+</body>
+</html>

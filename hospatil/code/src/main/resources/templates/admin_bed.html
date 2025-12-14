@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--引入第三方样式库-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>医院住院部管理系统-管理员</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/jqvmap/jqvmap.min.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" th:href="@{/plugins/summernote/summernote-bs4.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700}" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+        <div class="container">
+            <div class="collapse navbar-collapse order-3">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/index}">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/patient}">患者</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/doctor}">医生</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/drug}">药物</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/exam}">检测</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/bed}">床位</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/schedule}">排班</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/echarts}">图表</a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                <li class="nav-link">
+                    <a class="nav-link" href="/doctor/index" th:text="${session.username}"></a>
+                </li>
+                <li class="nav-link">
+                    <a class="nav-link" href="/logout" th:text="'注销'"></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="content-wrapper">
+        <div class="content-header">
+        </div>
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-10">
+                        <form action="/admin/bed/search" method="GET">
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    床位
+                                </div>
+                                <a th:href="@{/admin/bed/export}" class="btn btn-primary float-right">导出</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <table id="table1" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>图片</th>
+                                            <th>床位号</th>
+                                            <th>患者</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="b:${beds}">
+                                            <td><img th:src="@{${imageUrl}}" alt="Image" width="80" height="80"></td>
+                                            <td th:text="${b.number}"></td>
+                                            <td th:if="${b.patient}" th:text="${b.patient.name}"></td>
+                                            <td th:unless="${b.patient}" th:text="无"></td>
+                                            <td>
+                                                <a class="btn btn-primary" th:href="@{'/admin/bededit/'+${b.id}}">编辑</a>
+                                                <a th:href="@{'/admin/beddel/'+${b.id}}">
+                                                    <input class="btn btn-warning" type="button" value="删除" th:disabled="${b.patient}">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <a th:href="@{/admin/bedadd}" class="btn btn-primary">添加床位</a>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:insert="temp::footer"></div>
+</div>
+
+<!-- jQuery -->
+<script th:src="@{/plugins/jquery/jquery.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.js}"></script>
+<!-- DataTables -->
+<script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        $('#table1').DataTable({
+            "paging": true,
+            "emptyTable": "您没有病人了",
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "search": "搜索",
+            "infoEmpty": "无记录",
+            "paginate": {
+                "first": "首页",
+                "previous": "上一页",
+                "next": "下一页",
+                "last": "尾页"
+            }
+        });
+    });
+</script>
+</body>
+</html>

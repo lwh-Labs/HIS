@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdut.hospital.mapper.BedMapper">
+
+    <!-- 查询床位总数 -->
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM bed
+    </select>
+
+    <!-- 根据病人查找所有床位信息 -->
+    <select id="findAllByPatient" parameterType="com.sdut.hospital.po.Patient" resultType="com.sdut.hospital.po.Bed">
+        SELECT * FROM bed WHERE patient_id = #{patient.id}
+    </select>
+
+    <!-- 查询空闲床位信息 -->
+    <select id="findUnLive" resultType="com.sdut.hospital.po.Bed">
+        SELECT tempp.id, tempp.number
+        FROM (SELECT bed.*, patient.bed_id AS temp
+              FROM bed
+                       LEFT JOIN patient ON bed.id = patient.bed_id) AS tempp
+        WHERE tempp.temp IS NULL
+    </select>
+
+    <!-- 根据病人姓名模糊查询所有床位信息 -->
+    <select id="findAllByPatientNameContaining" parameterType="string" resultType="com.sdut.hospital.po.Bed">
+        SELECT bed.*
+        FROM bed
+                 JOIN patient ON bed.patient_id = patient.id
+        WHERE patient.name LIKE CONCAT('%', #{patientName}, '%')
+    </select>
+
+    <!-- 根据ID查询床位信息 -->
+    <select id="findById" parameterType="long" resultType="com.sdut.hospital.po.Bed">
+        SELECT * FROM bed WHERE id = #{id}
+    </select>
+
+    <!-- 插入床位信息 -->
+    <insert id="save" parameterType="com.sdut.hospital.po.Bed">
+        INSERT INTO bed (number, patient_id)
+        VALUES (#{number}, #{patient.id})
+    </insert>
+
+    <!-- 根据ID删除床位信息 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM bed WHERE id = #{id}
+    </delete>
+
+    <!-- 查询所有床位信息 -->
+    <select id="findAll" resultType="com.sdut.hospital.po.Bed">
+        SELECT * FROM bed
+    </select>
+    <select id="findByNumber" resultType="com.sdut.hospital.po.Bed">
+        SELECT * FROM bed WHERE number = #{number}
+    </select>
+
+
+</mapper>

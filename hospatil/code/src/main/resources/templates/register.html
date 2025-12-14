@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .login-box, .login-card-body, .card {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.4) !important; /* 设置背景为半透明白色，透明度为40% */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* 设置边框颜色为半透明白色 */
+            color: #000 !important; /* 确保文本颜色为黑色 */
+            transition: background-color 0.3s ease; /* 添加平滑过渡效果 */
+        }
+        .form-control:focus {
+            background: #fff !important; /* 在输入框获得焦点时设置背景为白色 */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* 保持边框颜色为半透明白色 */
+            outline: none; /* 移除默认的焦点边框 */
+        }
+        .fade-out {
+            opacity: 1;
+            transition: opacity 3s ease-out;
+        }
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050; /* Ensure it is on top */
+            width: 100%;
+            max-width: 400px; /* Adjust according to your layout */
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>医院住院部管理系统-注册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/jqvmap/jqvmap.min.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" th:href="@{/plugins/summernote/summernote-bs4.css}">
+    <link th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700}" rel="stylesheet">
+    <style>
+        .login-page {
+            align-items: center;
+            background: url('/images/2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: center;
+        }
+        .login-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+            max-width: 400px;
+            width: 100%;
+        }
+        .login-logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login-card-body {
+            padding: 20px;
+        }
+        .card {
+            background: transparent;
+            box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+            margin-bottom: 10rem;
+            border-radius: 10px;
+            height: 170px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 10px;
+        }
+        .alert {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .alert.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="hold-transition login-page">
+<!-- 显示注册失败信息 -->
+<div class="alert-container">
+    <div class="alert alert-danger alert-dismissible" th:if="${message}">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h6 th:text="${message}"><i class="icon fas fa-ban"></i> 注册失败!</h6>
+    </div>
+</div>
+<div class="login-box" style="background: transparent;">
+    <div class="login-logo" style="background: transparent;">
+        医院住院部管理系统
+    </div>
+    <div class="card" style="background: transparent;">
+        <div class="card-body login-card-body" style="background: transparent;">
+            <form method="post" th:action="@{/register}">
+                <div class="input-group mb-3">
+                    <input type="text" name="name" class="form-control" placeholder="姓名" required="required">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-id-badge"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="密码" required="required">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="phone" class="form-control" placeholder="手机号" required="required">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-phone"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="captcha" class="form-control" placeholder="验证码" required="required">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="padding: 0;">
+                            <img id="captchaImg" th:src="@{/common/kaptcha}" onclick="refreshCaptcha()" style="cursor: pointer; max-width: 100%; height: auto;">
+                        </span>
+                        <button type="button" class="btn btn-default" onclick="refreshCaptcha()">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="icheck-primary">
+                            <input type="radio" id="admin_register" name="usertype" value="admin" required="required">
+                            <label for="admin_register">
+                                管理员
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="icheck-primary">
+                            <input type="radio" id="doctor_register" name="usertype" value="doctor" required="required" checked="checked">
+                            <label for="doctor_register">
+                                医生
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="icheck-primary">
+                            <input type="radio" id="patient_register" name="usertype" value="patient" required="required">
+                            <label for="patient_register">
+                                病人
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix" style="margin-bottom: 10px;"></div>
+                <div class="row">
+                    <button type="submit" class="btn btn-block btn-primary" style="border-radius: 10px;">
+                        注册
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<script th:inline="javascript">
+    function refreshCaptcha() {
+        // 获取验证码图片元素
+        var img = document.getElementById('captchaImg');
+        // 刷新验证码图片，加上时间戳防止缓存
+        img.src = '/common/kaptcha?' + new Date().getTime();
+    }
+    $(document).ready(function(){
+        // 如果存在警告框
+        if ($('.alert').length) {
+            // 添加显示类
+            $('.alert').addClass('show');
+            // 3秒后移除显示类
+            setTimeout(function(){
+                $('.alert').removeClass('show');
+            }, 3000);
+        }
+    });
+</script>
+</body>
+</html>

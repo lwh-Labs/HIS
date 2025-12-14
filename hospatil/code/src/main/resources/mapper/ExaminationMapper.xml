@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdut.hospital.mapper.ExaminationMapper">
+
+    <!-- 定义 Examination 对象的 resultMap：进行数据的映射 -->
+    <resultMap id="examinationResultMap" type="com.sdut.hospital.po.Examination">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="patient.id" column="patient_id"/>
+        <result property="creatTime" column="creat_time"/>
+        <result property="price" column="price"/>
+    </resultMap>
+    <!-- 根据病人ID查询所有检查信息 -->
+    <select id="findAllByPatient_Id" resultMap="examinationResultMap">
+        SELECT *
+        FROM examination
+        WHERE patient_id = #{id}
+    </select>
+
+    <!-- 查询检查总数 -->
+    <select id="count" resultType="long">
+        SELECT COUNT(*)
+        FROM examination
+    </select>
+
+    <!-- 根据创建时间查询所有检查信息 -->
+    <select id="findAllByCreatTime" resultMap="examinationResultMap">
+        SELECT *
+        FROM examination
+        WHERE creat_time = #{date}
+    </select>
+
+    <!-- 根据创建时间查询检查数量 -->
+    <select id="countAllByCreatTime" resultType="int">
+        SELECT COUNT(*)
+        FROM examination
+        WHERE creat_time = #{date}
+    </select>
+
+    <!-- 根据创建时间和病人ID查询检查信息 -->
+    <select id="findAllByCreatTimeAndPatient_Id" resultMap="examinationResultMap">
+        SELECT *
+        FROM examination
+        WHERE creat_time = #{date}
+          AND patient_id = #{id}
+    </select>
+
+    <!-- 查询病人做过检查的所有不同日期 -->
+    <select id="findDistinctDate" resultType="java.sql.Date">
+        SELECT DISTINCT creat_time
+        FROM examination
+        WHERE patient_id = #{patientid}
+    </select>
+
+    <!-- 根据检查内容查询检查信息 -->
+    <select id="findByContent" resultMap="examinationResultMap">
+        SELECT *
+        FROM examination
+        WHERE content = #{content}
+    </select>
+    <select id="findexam_date" resultType="java.lang.String"></select>
+    <select id="findexam_num" resultType="java.lang.Integer"></select>
+    <select id="count_exam" resultType="java.lang.Long"></select>
+
+    <!-- 插入检查信息，并返回自动生成的主键 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO examination (content, patient_id, creat_time, price)
+        VALUES (#{content}, #{patient.id}, #{creatTime}, #{price})
+    </insert>
+
+    <!-- 更新检查信息 -->
+    <update id="update">
+        UPDATE examination
+        SET content    = #{content},
+            patient_id = #{patient.id},
+            creat_time = #{creatTime},
+            price      = #{price}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除检查信息 -->
+    <delete id="deleteById">
+        DELETE
+        FROM examination
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

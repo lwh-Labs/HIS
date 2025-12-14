@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>医院住院部管理系统-病人</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css}">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" th:href="@{/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css}">
+    <!-- iCheck -->
+    <link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <!-- JQVMap -->
+    <link rel="stylesheet" th:href="@{/plugins/jqvmap/jqvmap.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+    <!-- summernote -->
+    <link rel="stylesheet" th:href="@{/plugins/summernote/summernote-bs4.css}">
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link th:href="@{https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700}" rel="stylesheet">
+</head>
+<body class="hold-transition layout-top-nav">
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+        <div class="container">
+            <div class="collapse navbar-collapse order-3">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/patient/index}">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/patient/bill}">费用信息</a>
+                    </li>
+                </ul>
+            </div>
+        <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+            <li class="nav-link">
+                <a class="nav-link" href="/patient/index" th:text="${session.username}"></a>
+            </li>
+            <li class="nav-link">
+                <a class="nav-link" href="/logout" th:text="'注销'"></a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+    <!-- 内容区域 -->
+    <div class="content-wrapper">
+        <div class="content-header">
+        </div>
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-10">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    修改个人信息
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form action="/patient/modify" method="post">
+                                    <input type="hidden" name="id" th:value="${patient.id}">
+                                    <div class="form-group">
+                                        <label>姓名:</label>
+                                        <input type="text" class="form-control" name="name" th:value="${patient.name}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>电话:</label>
+                                        <input type="text" class="form-control" name="phone" th:value="${patient.phone}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">密码</label>
+                                        <input class="form-control" type="password" required="required" name="password" id="password" placeholder="密码">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>地址:</label>
+                                        <input type="text" class="form-control" name="addr" th:value="${patient.addr}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">保存</button>
+                                </form>
+                                <div th:if="${message}">
+                                    <p th:text="${message}" class="alert alert-info mt-3"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:insert="temp::footer"></div>
+</div>

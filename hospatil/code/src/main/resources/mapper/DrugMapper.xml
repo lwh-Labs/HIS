@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdut.hospital.mapper.DrugMapper">
+
+    <!-- 定义 Drug 对象的 resultMap -->
+    <resultMap id="drugResultMap" type="com.sdut.hospital.po.Drug">
+        <id property="id" column="id"/>
+        <result property="drugname" column="drugname"/>
+        <result property="patient.id" column="patient_id"/>
+        <result property="creatDate" column="creat_date"/>
+        <result property="isfinished" column="isfinished"/>
+        <result property="number" column="number"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+
+    <!-- 根据病人ID查询所有药物信息 -->
+    <select id="findAllByPatient_Id" resultMap="drugResultMap">
+        SELECT * FROM drug WHERE patient_id = #{id}
+    </select>
+
+    <!-- 查询药物总数 -->
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM drug
+    </select>
+
+    <!-- 根据创建日期查询所有药物信息 -->
+    <select id="findAllByCreatDate" resultMap="drugResultMap">
+        SELECT * FROM drug WHERE creat_date = #{date}
+    </select>
+
+    <!-- 根据创建日期查询药物数量 -->
+    <select id="countAllByCreatDate" resultType="int">
+        SELECT COUNT(*) FROM drug WHERE creat_date = #{date}
+    </select>
+
+    <!-- 根据创建日期和病人ID查询药物信息 -->
+    <select id="findAllByCreatDateAndPatient_Id" resultMap="drugResultMap">
+        SELECT * FROM drug WHERE creat_date = #{date} AND patient_id = #{id}
+    </select>
+
+    <!-- 查询病人使用过药物的所有不同日期 -->
+    <select id="findDistinctDate" resultType="java.sql.Date">
+        SELECT DISTINCT creat_date FROM drug WHERE patient_id = #{patientid}
+    </select>
+
+    <!-- 根据药物名称查询药物信息 -->
+    <select id="findByDrugname" resultMap="drugResultMap">
+        SELECT * FROM drug WHERE drugname = #{drugname}
+    </select>
+    <select id="finddrug_date" resultType="java.lang.String"></select>
+    <select id="finddrug_num" resultType="java.lang.Integer"></select>
+    <select id="count_drug" resultType="java.lang.Long"></select>
+
+    <!-- 插入药物信息，并返回自动生成的主键 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO drug (drugname, patient_id, creat_date, isfinished, number, price)
+        VALUES (#{drugname}, #{patient.id}, #{creatDate}, #{isfinished}, #{number}, #{price})
+    </insert>
+
+    <!-- 更新药物信息 -->
+    <update id="update">
+        UPDATE drug
+        SET drugname = #{drugname}, patient_id = #{patient.id}, creat_date = #{creatDate},
+            isfinished = #{isfinished}, number = #{number}, price = #{price}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除药物信息 -->
+    <delete id="deleteById">
+        DELETE FROM drug WHERE id = #{id}
+    </delete>
+
+</mapper>
